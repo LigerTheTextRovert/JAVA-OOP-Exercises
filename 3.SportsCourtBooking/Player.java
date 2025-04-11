@@ -37,15 +37,15 @@ public class Player {
         }
     }
 
-    public void removeBookedCourt(int courtID) {
-        for (Court c : bookedCourts) {
-            if (courtID == c.getID()) {
-                c.setAvailable(true);
-                bookedCourts.remove(c);
-                System.out.println("Booking for court " + c.getID() + " canceled.");
-                return;
+    public boolean removeBookedCourt(int courtId) {
+        for (Court court : bookedCourts) {
+            if (court.getID() == courtId) {
+                bookedCourts.remove(court);
+                court.setAvailable(true); // make it available again
+                return true;
             }
         }
+        return false;
     }
 
     public void viewCurrentBooks() {

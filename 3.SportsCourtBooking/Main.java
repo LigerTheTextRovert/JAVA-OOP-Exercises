@@ -7,91 +7,100 @@ public class Main {
         ArrayList<Court> courtsList = new ArrayList<>();
         ArrayList<Player> playerList = new ArrayList<>();
 
-        //first initialization for players list
         initPlayerList(playerList);
-
-        //first initialization for courts
         initCourtList(courtsList);
 
         Scanner sc = new Scanner(System.in);
 
         boolean keepGoing = true;
-
         System.out.println("\n====  Welcome to Court management system  ====\n");
         while (keepGoing) {
-
             showMenu();
-
             int ans = sc.nextInt();
             sc.nextLine();
 
-            if (ans == 1) {
-                System.out.print("Enter your name: ");
-                String playerName = sc.nextLine();
-
-                Player player = findPlayerByName(playerList, playerName);
-
-                if (player == null) {
-                    player = new Player(playerName);
-                    playerList.add(player);
-                    System.out.println("New player created.");
-                } else {
-                    System.out.println("Welcome back, " + playerName + "!");
+            switch (ans) {
+                case 1 -> handleBookCourt(sc, courtsList, playerList);
+                case 2 -> handleCancelBooking(sc, playerList);
+                case 3 -> printAvailableCourts(courtsList);
+                case 4 -> handleAddCourt(sc, courtsList, admin);
+                case 5 -> handleRemoveCourt(sc, courtsList, admin);
+                case 6 -> {
+                    System.out.println("Closing The Panel");
+                    keepGoing = false;
                 }
-
-                printAvailableCourts(courtsList);
-                System.out.print("Enter your court's id :");
-                int courtId = sc.nextInt();
-                sc.nextLine();
-                player.bookCourt(courtsList, courtId);
-            }
-            if (ans == 2) {
-                System.out.print("Enter you user name :");
-                String playerName = sc.nextLine();
-
-                Player player = findPlayerByName(playerList, playerName);
-
-                if (player == null) {
-                    System.out.println("There is no player by this name!");
-                    continue;
-                } else {
-                    System.out.println("Welcome back, " + playerName + "!");
-                }
-                System.out.println("Your booked courts list:");
-                player.viewCurrentBooks();
-
-                System.out.print("Enter the booked Court's id you wanna cancel :");
-                int courtID = sc.nextInt();
-                sc.nextLine();
-                player.removeBookedCourt(courtID);
-                System.out.println("Court with the id :" + courtID + " ,removed from you book list");
-            }
-            if (ans == 3) {
-                printAvailableCourts(courtsList);
-            }
-            if (ans == 4) {
-                System.out.print("Enter The type of the court :");
-                String courtType = sc.nextLine();
-                if (isCourtUnique(courtsList, courtType)) {
-                    admin.addCourt(courtsList, new Court(courtType));
-                } else {
-                    System.out.println("You can not add a court with this type :(");
-                }
-            }
-            if (ans == 5) {
-                printAvailableCourts(courtsList);
-                System.out.print("Enter the Id of the court you wanna remove :");
-                int targetCourtID = sc.nextInt();
-                sc.nextLine();
-                admin.removeCourt(courtsList, targetCourtID);
-                printAvailableCourts(courtsList);
-            }
-            if (ans == 6) {
-                System.out.println("Closing The Panel");
-                keepGoing = false;
+                default -> System.out.println("Invalid option. Please try again.");
             }
         }
         sc.close();
+    }
+
+    public static void handleBookCourt(Scanner sc, ArrayList<Court> courtsList, ArrayList<Player> playerList) {
+        System.out.print("Enter your name: ");
+        String playerName = sc.nextLine();
+
+        Player player = findPlayerByName(playerList, playerName);
+
+        if (player == null) {
+            player = new Player(playerName);
+            playerList.add(player);
+            System.out.println("New player created.");
+        } else {
+            System.out.println("Welcome back, " + playerName + "!");
+        }
+
+        printAvailableCourts(courtsList);
+        System.out.print("Enter your court's ID: ");
+        int courtId = sc.nextInt();
+        sc.nextLine();
+        player.bookCourt(courtsList, courtId);
+    }
+
+    public static void handleCancelBooking(Scanner sc, ArrayList<Player> playerList) {
+        System.out.print("Enter your username: ");
+        String playerName = sc.nextLine();
+
+        Player player = findPlayerByName(playerList, playerName);
+
+        if (player == null) {
+            System.out.println("There is no player by this name!");
+            return;
+        } else {
+            System.out.println("Welcome back, " + playerName + "!");
+        }
+
+        System.out.println("Your booked courts list:");
+        player.viewCurrentBooks();
+
+        System.out.print("Enter the booked Court's ID you want to cancel: ");
+        int courtID = sc.nextInt();
+        sc.nextLine();
+
+        boolean removed = player.removeBookedCourt(courtID);
+        if (removed) {
+            System.out.println("Court with ID " + courtID + " has been removed from your booking list.");
+        } else {
+            System.out.println("You didn't have a booking for court with ID " + courtID + ".");
+        }
+    }
+
+    public static void handleAddCourt(Scanner sc, ArrayList<Court> courtsList, Admin admin) {
+        System.out.print("Enter the type of the court: ");
+        String courtType = sc.nextLine();
+        if (isCourtUnique(courtsList, courtType)) {
+            admin.addCourt(courtsList, new Court(courtType));
+        } else {
+            System.out.println("You cannot add a court with this type :(");
+        }
+    }
+
+    public static void handleRemoveCourt(Scanner sc, ArrayList<Court> courtsList, Admin admin) {
+        printAvailableCourts(courtsList);
+        System.out.print("Enter the ID of the court you want to remove: ");
+        int targetCourtID = sc.nextInt();
+        sc.nextLine();
+        admin.removeCourt(courtsList, targetCourtID);
+        printAvailableCourts(courtsList);
     }
 
     public static void showMenu() {
@@ -100,9 +109,9 @@ public class Main {
         System.out.println("2. Cancel a book");
         System.out.println("3. Available courts");
         System.out.println("4. Add a court (Admin)");
-        System.out.println("5. remove a court (Admin)");
+        System.out.println("5. Remove a court (Admin)");
         System.out.println("6. Exit");
-        System.out.print("\nChose an option: ");
+        System.out.print("\nChoose an option: ");
     }
 
     public static void initCourtList(ArrayList<Court> courtList) {
@@ -119,7 +128,7 @@ public class Main {
     public static void printAvailableCourts(ArrayList<Court> list) {
         System.out.println("Current Court: ");
         for (Court c : list) {
-            System.out.println(c.toString());
+            System.out.println(c);
         }
     }
 
