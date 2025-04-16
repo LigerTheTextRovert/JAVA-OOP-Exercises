@@ -1,96 +1,122 @@
-# Sports Court Booking System 🏀
+# Food Ordering System 🍽️
 
 ## Overview
-This is a **Sports Court Booking System** built using **OOP principles in Java**. It allows users to book different types of sports courts based on availability.
+This is a **Food Ordering System** built using **OOP principles in Java**. Users can browse a menu, place orders, and restaurant staff can manage orders.
 
 ## Features
-- Different types of courts (e.g., basketball, tennis, football).
-- Players can book courts if available.
-- Admins can add/remove courts.
+- Customers can view the menu and place an order.
+- Each order has multiple items.
+- Restaurant staff can update order status.
 
 ## Classes & Structure
 ```plaintext
-SportsBookingSystem
- ├── Court
- ├── Player
- ├── Admin
+FoodOrderingSystem
+ ├── MenuItem
+ ├── Order
+ ├── Customer
+ ├── Restaurant
  ├── Main (Runner)
 ```
 
 ## Implementation
 
-### `Court.java`
+### `MenuItem.java`
 ```java
-public class Court {
-    private String sportType;
-    private boolean isAvailable;
-
-    public Court(String sportType) {
-        this.sportType = sportType;
-        this.isAvailable = true;
-    }
-
-    public boolean bookCourt() {
-        if (isAvailable) {
-            isAvailable = false;
-            return true;
-        }
-        return false;
-    }
-
-    public void releaseCourt() {
-        isAvailable = true;
-    }
-
-    public String getSportType() {
-        return sportType;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-}
-```
-
-### `Player.java`
-```java
-public class Player {
+public class MenuItem {
     private String name;
+    private double price;
 
-    public Player(String name) {
+    public MenuItem(String name, double price) {
         this.name = name;
+        this.price = price;
     }
 
-    public boolean bookCourt(Court court) {
-        if (court.bookCourt()) {
-            System.out.println(name + " successfully booked a " + court.getSportType() + " court.");
-            return true;
-        }
-        System.out.println("Court is already booked!");
-        return false;
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
     }
 }
 ```
 
-### `Admin.java`
+### `Order.java`
 ```java
 import java.util.ArrayList;
 import java.util.List;
 
-public class Admin {
-    private List<Court> courts;
+public class Order {
+    private List<MenuItem> items;
+    private String status;
 
-    public Admin() {
-        this.courts = new ArrayList<>();
+    public Order() {
+        this.items = new ArrayList<>();
+        this.status = "Pending";
     }
 
-    public void addCourt(Court court) {
-        courts.add(court);
-        System.out.println("Added " + court.getSportType() + " court.");
+    public void addItem(MenuItem item) {
+        items.add(item);
     }
 
-    public List<Court> getCourts() {
-        return courts;
+    public double calculateTotal() {
+        double total = 0;
+        for (MenuItem item : items) {
+            total += item.getPrice();
+        }
+        return total;
+    }
+
+    public void updateStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+}
+```
+
+### `Customer.java`
+```java
+public class Customer {
+    private String name;
+
+    public Customer(String name) {
+        this.name = name;
+    }
+
+    public Order placeOrder(MenuItem... items) {
+        Order order = new Order();
+        for (MenuItem item : items) {
+            order.addItem(item);
+        }
+        System.out.println(name + " placed an order. Total: $" + order.calculateTotal());
+        return order;
+    }
+}
+```
+
+### `Restaurant.java`
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Restaurant {
+    private List<Order> orders;
+
+    public Restaurant() {
+        this.orders = new ArrayList<>();
+    }
+
+    public void receiveOrder(Order order) {
+        orders.add(order);
+        System.out.println("New order received. Status: " + order.getStatus());
+    }
+
+    public void updateOrderStatus(Order order, String status) {
+        order.updateStatus(status);
+        System.out.println("Order status updated to: " + status);
     }
 }
 ```
@@ -99,18 +125,15 @@ public class Admin {
 ```java
 public class Main {
     public static void main(String[] args) {
-        Admin admin = new Admin();
-        Court basketballCourt = new Court("Basketball");
-        Court tennisCourt = new Court("Tennis");
+        Restaurant restaurant = new Restaurant();
+        MenuItem burger = new MenuItem("Burger", 5.99);
+        MenuItem pizza = new MenuItem("Pizza", 8.99);
+
+        Customer customer = new Customer("Alice");
+        Order order = customer.placeOrder(burger, pizza);
+        restaurant.receiveOrder(order);
         
-        admin.addCourt(basketballCourt);
-        admin.addCourt(tennisCourt);
-        
-        Player player1 = new Player("John");
-        Player player2 = new Player("Alice");
-        
-        player1.bookCourt(basketballCourt);
-        player2.bookCourt(basketballCourt); // Should print "Court is already booked!"
+        restaurant.updateOrderStatus(order, "In Progress");
     }
 }
 ```
@@ -122,9 +145,9 @@ public class Main {
    ```
 
 ## Future Enhancements
-- Implement a booking schedule.
-- Allow online booking with timestamps.
-- Introduce payment system for reservations.
+- Add payment integration.
+- Implement a delivery tracking system.
+- Improve user interface with a GUI.
 
 ---
-🏆 **Reserve your favorite court now!** 🎾
+🍕 **Order your favorite meals easily!** 🍔

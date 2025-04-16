@@ -23,8 +23,8 @@ public class Main {
                 case 1 -> handleBookCourt(sc, courtsList, playerList);
                 case 2 -> handleCancelBooking(sc, playerList);
                 case 3 -> printAvailableCourts(courtsList);
-                case 4 -> handleAddCourt(sc, courtsList, admin);
-                case 5 -> handleRemoveCourt(sc, courtsList, admin);
+                case 4 -> addCourt(sc, courtsList, admin);
+                case 5 -> removeCourt(sc, courtsList, admin);
                 case 6 -> {
                     System.out.println("Closing The Panel");
                     keepGoing = false;
@@ -84,7 +84,7 @@ public class Main {
         }
     }
 
-    public static void handleAddCourt(Scanner sc, ArrayList<Court> courtsList, Admin admin) {
+    public static void addCourt(Scanner sc, ArrayList<Court> courtsList, Admin admin) {
         System.out.print("Enter the type of the court: ");
         String courtType = sc.nextLine();
         if (isCourtUnique(courtsList, courtType)) {
@@ -94,7 +94,7 @@ public class Main {
         }
     }
 
-    public static void handleRemoveCourt(Scanner sc, ArrayList<Court> courtsList, Admin admin) {
+    public static void removeCourt(Scanner sc, ArrayList<Court> courtsList, Admin admin) {
         printAvailableCourts(courtsList);
         System.out.print("Enter the ID of the court you want to remove: ");
         int targetCourtID = sc.nextInt();

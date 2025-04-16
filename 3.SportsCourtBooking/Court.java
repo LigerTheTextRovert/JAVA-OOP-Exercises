@@ -28,7 +28,6 @@ public class Court {
         this.isAvailable = available;
     }
 
-    @Override
     public String toString() {
         return "Court ID: " + id + ", Type: " + type + ", Available: " + isAvailable;
     }
