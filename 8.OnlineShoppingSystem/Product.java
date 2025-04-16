@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class Product {
     private String productName;
     private int id;
@@ -23,5 +24,19 @@ public class Product {
     }
     public float getProductPrice(){
        return productPrice;
+    }
+    public int getStockCount(){
+        return stockCount;
+    }
+
+    //----------------------------------------------------------------------------
+    // SETTERS
+    //----------------------------------------------------------------------------
+    public void setStockCount (int count){
+       this.stockCount = count;
+    }
+
+    public void chargeProduct (int n){
+        this.stockCount += n;
     }
 }
