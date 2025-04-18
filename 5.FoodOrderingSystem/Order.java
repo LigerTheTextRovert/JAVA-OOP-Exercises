@@ -12,6 +12,18 @@ public class Order {
         this.status = "Pending";
         this.orderId = rand.nextInt(5000) + 1000;
     }
+    //================================
+    //GETTERS
+    //================================
+    public String getStatus() {
+        return status;
+    }
+    public ArrayList<MenuItem> getItems() {
+        return items;
+    }
+    public int getOrderId(){
+        return orderId;
+    }
 
     public void addItem(MenuItem item) {
         items.add(item);
@@ -24,20 +36,11 @@ public class Order {
         }
         return total;
     }
-
+    //setter for status property
     public void updateStatus(String status) {
         this.status = status;
     }
 
-    public String getStatus() {
-        return status;
-    }
-    public ArrayList<MenuItem> getItems() {
-        return items;
-    }
-    public int getOrderId(){
-        return orderId;
-    }
 
     @Override
     public String toString() {

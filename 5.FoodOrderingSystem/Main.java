@@ -7,7 +7,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Restaurant restaurant = new Restaurant();
 
-        System.out.println("\nWelcome to your resta ! 🍽️");
+        System.out.println("\nWelcome to your restaurant ! 🍽️");
         boolean keepGoing = true;
         while (keepGoing){
             showMenu();
@@ -41,7 +41,7 @@ public class Main {
 
     public static void orderPlacementHandler(Scanner sc, ArrayList<Customer> customers, Restaurant restaurant){
         Customer customer = getOrCreateCustomer(sc, customers);
-        Order order = new Order(); // create new order
+        Order order = new Order();
 
         while (true){
             restaurant.printMenu();
@@ -68,6 +68,7 @@ public class Main {
         }
     }
 
+    //Helper method to print the menu options.
     public static void showMenu (){
         System.out.println("1. View Menu");
         System.out.println("2. Place Order");
@@ -76,6 +77,7 @@ public class Main {
         System.out.println("5. Exit");
     }
 
+    //Helper method when we need to interact with user info.
     public static Customer getOrCreateCustomer(Scanner sc, ArrayList<Customer> customers) {
         System.out.print("Enter your name: ");
         String inputName = sc.nextLine();
@@ -91,7 +93,7 @@ public class Main {
 
         return customer;
     }
-
+    //Simple helper method to find a customer from customer list in Restaurant class.
     public static Customer findCustomer(ArrayList<Customer> customers, String name){
        for (Customer c : customers){
            if (c.getName().equalsIgnoreCase(name)){
@@ -100,6 +102,7 @@ public class Main {
        }
        return null;
     }
+    //Simple helper method to find an item from menu in Restaurant class.
     public static MenuItem findItem (ArrayList<MenuItem> menuItems, String foodName){
         for (MenuItem item : menuItems){
            if (item.getName().equalsIgnoreCase(foodName)){

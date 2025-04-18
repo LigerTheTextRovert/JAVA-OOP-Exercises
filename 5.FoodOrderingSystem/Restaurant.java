@@ -11,11 +11,12 @@ public class Restaurant {
         this.customers = new ArrayList<>();
         this.initMenu();
     }
-
+    //================================
+    //GETTERS
+    //================================
     public ArrayList<Customer> getCustomers() {
         return customers;
     }
-
     public ArrayList<MenuItem> getMenuItem() {
         return menu;
     }
@@ -25,6 +26,7 @@ public class Restaurant {
         System.out.println("New order received. Status: " + order.getStatus());
     }
 
+    //Simple method to put some items in the menu.
     public void initMenu() {
         menu.add(new MenuItem("Burger", 5.99));
         menu.add(new MenuItem("Pizza", 8.99));
@@ -38,6 +40,7 @@ public class Restaurant {
         menu.add(new MenuItem("Ice Cream", 3.50));
     }
 
+    //Method to change the status of the order.
     public void updateOrderStatus(int orderID, String newStatus) {
         for (Order order : orders) {
             if (order.getOrderId() == orderID) {
